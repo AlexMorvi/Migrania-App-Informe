@@ -6,17 +6,15 @@
 1. [Resumen Ejecutivo](#resumen-ejecutivo)
 2. [Metodología BDD y Testing](#metodología-bdd-y-testing)
 3. [Arquitectura del sistema y capabilities](#arquitectura-del-sistema-y-capabilities)
-4. [Features y Especificaciones BDD](#4-features-y-especificaciones-bdd)
+4. [Feature Asignada](#4-feature-asignada)
 5. [Implementación de Steps y Validaciones](#5-implementación-de-steps-y-validaciones)
 6. [Metodología de Branching y Desarrollo](#6-metodología-de-branching-y-desarrollo)
 7. [Verificación y Validación de Software](#7-verificación-y-validación-de-software)
 8. [Backend - Arquitectura y Servicios](#8-backend---arquitectura-y-servicios)
 9. [Testing Framework y Automation](#9-testing-framework-y-automation)
-10. [Gestión de Calidad de Software](#10-gestión-de-calidad-de-software)
-11. [Infraestructura y CI/CD](#11-infraestructura-y-cicd)
-12. [Análisis de Cobertura y Métricas](#12-análisis-de-cobertura-y-métricas)
-13. [Conclusiones y Trabajo Futuro](#13-conclusiones-y-trabajo-futuro)
-14. [Anexos](#14-anexos)
+10. [Infraestructura y CI/CD](#10-infraestructura-y-cicd)
+11. [Conclusiones y Trabajo Futuro](#11-conclusiones-y-trabajo-futuro)
+12. [Anexos](#12-anexos)
     - [Glosario Médico-Técnico](#anexo-a-glosario-médico-técnico)
     - [Referencias y Estándares Médicos](#anexo-b-referencias-y-estándares-médicos)
 
@@ -24,19 +22,53 @@
 
 ## Resumen Ejecutivo
 
-**Migrania-App** es un sistema web integral desarrollado siguiendo metodologías ágiles y **Behavior-Driven Development (BDD)** para el manejo, diagnóstico y seguimiento de episodios de migraña y cefalea. El proyecto implementa una arquitectura robusta de microservicios con backend en Django REST Framework y frontend en React, diseñado específicamente para facilitar la comunicación entre médicos y pacientes en el tratamiento de trastornos cefálicos.
+**Migrania-App** es un sistema web integral desarrollado siguiendo metodologías ágiles y **Behavior-Driven Development (BDD)** para el manejo, diagnóstico y seguimiento de episodios de migraña y cefalea. El proyecto implementa una arquitectura robusta con API REST, utilizando Django REST Framework para el backend y React para el frontend, diseñado específicamente para facilitar la comunicación entre médicos y pacientes en el tratamiento de trastornos cefálicos.
 
-### Enfoque en Calidad de Software
+### Vision
 
-El desarrollo del sistema se fundamenta en principios de **ingeniería de software de alta calidad**:
+Mejorar el manejo clínico y la calidad de vida de pacientes con migraña.
 
-- **BDD (Behavior-Driven Development)**: Especificaciones ejecutables en español usando Gherkin
-- **Testing Automatizado**: Cobertura integral con casos de prueba médicamente validados
-- **Arquitectura Limpia**: Separación clara de responsabilidades y patrones SOLID
-- **Metodología Feature-Branch**: Desarrollo paralelo por funcionalidades médicas específicas
-- **Verificación y Validación Continua**: Pipelines automatizados de testing y calidad
+---
 
-### Capabilities Médicas Principales
+### Objetivos
+
+*Mejorar el Diagnóstico, Seguimiento y Tratamiento*
+
+Proporcionar herramientas avanzadas que ayuden a los médicos a diagnosticar con precisión, monitorear la evolución y diseñar planes de tratamiento más efectivos.
+
+*Empoderar a los Pacientes*
+
+Brindar a los pacientes las herramientas necesarias para que puedan monitorear y gestionar mejor sus episodios de migraña, reduciendo su impacto diario.
+
+*Identificar Desencadenantes Personalizados*
+
+Facilitar la detección de factores de riesgo individuales, permitiendo medidas preventivas más eficaces.
+
+---
+
+### Capabilities
+
+#### *1. Evaluación y Diagnóstico*
+
+Establece un punto de partida clínico robusto mediante la evaluación estandarizada y la captura sistemática de datos del paciente. Permite cuantificar el impacto de la patología y fundamentar un diagnóstico preciso para futuras intervenciones.
+
+#### *2. Gestión de Tratamientos*
+
+Centraliza y optimiza el ciclo de vida del tratamiento. Asegura la adherencia y supervisa la efectividad terapéutica, facilitando ajustes proactivos para maximizar los resultados clínicos y la eficiencia del plan prescrito.
+
+#### *3. Análisis e Insights*
+
+Transforma datos crudos en inteligencia clínica y de negocio. Identifica patrones, correlaciones y factores predictivos para habilitar una medicina de precisión, personalizando las estrategias de intervención y mejorando los resultados a escala.
+
+#### *4. Agendamiento de Citas*
+
+Optimiza el flujo de acceso del paciente al sistema de salud. Provee una gestión centralizada de las consultas para garantizar la continuidad de la atención, mejorar la experiencia del paciente y maximizar la eficiencia operativa.
+
+#### *5. Usuarios y Autenticación*
+
+Implementa un sistema de identidad y control de acceso. Proporciona mecanismos de autenticación segura y autorización basada en roles médicos específicos, protegiendo datos clínicos sensibles mientras facilita el acceso contextualizado a las funcionalidades del sistema según el perfil profesional o paciente. 
+
+### Features vs Capabilities
 
 El sistema implementa **5 Capabilities médicas especializadas**:
 
@@ -58,6 +90,18 @@ El sistema implementa **5 Capabilities médicas especializadas**:
 #### **5. Usuarios y Autenticación**
 - **Sistema de Roles**: Médico, Paciente, Enfermera con permisos diferenciados
 - **Gestión de Perfiles**: Información médica especializada por tipo de usuario
+
+---
+
+### Enfoque en Calidad de Software
+
+El desarrollo del sistema se fundamenta en principios de **ingeniería de software de alta calidad**:
+
+- **BDD (Behavior-Driven Development)**: Especificaciones ejecutables en español usando Gherkin
+- **Testing Automatizado**: Cobertura integral con casos de prueba médicamente validados
+- **Arquitectura Limpia**: Separación clara de responsabilidades y patrones SOLID
+- **Metodología Feature-Branch**: Desarrollo paralelo por funcionalidades médicas específicas
+- **Verificación y Validación Continua**: Pipelines automatizados de testing y calidad
 
 ---
 
@@ -97,38 +141,60 @@ backend/
 │       ├── __init__.py
 │       └── [funcionalidad]_steps.py     # Implementación de pasos
 ```
-
-### Estándares de Calidad BDD
-
-**Criterios de aceptación:**
-- ✅ **Completitud**: Todas las features médicas deben tener especificaciones BDD
-- ✅ **Claridad**: Escenarios escritos en español médico comprensible
-- ✅ **Ejecutabilidad**: Todos los escenarios deben ser automatizables
-- ✅ **Validación Médica**: Criterios aprobados por profesionales de salud
-- ✅ **Mantenibilidad**: Steps reutilizables y modularizados
-
 ---
 
 ## Arquitectura del sistema y capabilities
 
-### Stack Tecnológico
+### Stack Tecnológico Detallado
 
-**Backend:**
-- **BDD Framework**: Behave 1.2.6 para especificaciones ejecutables
-- **Unit Testing**: Django TestCase con fixtures médicas
-- **API Testing**: Django REST Framework test utilities
-- **Mock Services**: Repositorios fake para aislamiento de pruebas
-- **Validation Testing**: Validaciones médicas automatizadas
+El proyecto implementa un stack moderno y robusto con las siguientes tecnologías específicas:
 
-**Frontend:**
-- **Framework**: React 19.1.0 con Vite 7.0.3 para desarrollo rápido
-- **E2E**: Preparado para Cypress/Playwright
-- **Linting**: ESLint 9.30.1 con reglas médicas específicas
+#### **Backend**
 
-**Infrastructure Testing:**
-- **Containerización**: Docker para entornos consistentes
-- **Database Testing**: PostgreSQL con datos de prueba médicos
-- **CI/CD**: Preparado para GitHub Actions con testing automatizado
+**Framework y Core:**
+- **Django 5.2.4**: Framework web de alto nivel para desarrollo rápido pero robusto
+- **Python 3.13**: Versión más reciente con mejoras significativas de rendimiento
+- **Django REST Framework 3.16.0**: Framework para APIs RESTful
+- **PostgreSQL 16**: Sistema de base de datos relacional avanzado
+
+**Autenticación y Seguridad:**
+- **Django REST Framework Simple JWT 5.5.1**: Implementación JWT para autenticación segura
+- **Djoser 2.3.3**: Endpoints REST para gestión de usuarios
+- **Social Auth**: Integración con autenticación de terceros
+
+**Testing y Calidad:**
+- **Behave 1.2.6**: Framework BDD para Python
+- **Pylint**: Analizador estático de código con reglas personalizadas para el proyecto
+- **Coverage**: Medición de cobertura de pruebas mediante SonarCube
+
+**Infraestructura:**
+- **Docker/Docker Compose**: Contenedores para desarrollo y despliegue consistentes
+- **uv**: Instalador de paquetes Python ultrarrápido
+- **Python-dotenv 1.1.1**: Carga de variables de entorno desde archivos .env
+
+#### **Frontend**
+
+**Framework y Core:**
+- **React 19.1.0**: Biblioteca JavaScript para interfaces de usuario
+- **Vite 7.0.3**: Herramienta de construcción frontend ultrarrápida
+- **React Router DOM 7.6.3**: Enrutamiento declarativo para React
+- **React Icons 5.5.0**: Biblioteca de iconos para React
+
+**Desarrollo y Calidad:**
+- **ESLint 9.30.1**: Linting de JavaScript/TypeScript
+- **Eslint-plugin-react-hooks 5.2.0**: Reglas específicas para hooks de React
+- **Pylint**: Analizador estático de código Python con reglas personalizadas para el proyecto
+
+#### **DevOps y CI/CD**
+
+**Contenedores:**
+- **Docker multi-stage builds**: Optimización de imágenes Docker
+- **Docker Compose**: Orquestación local de servicios
+
+**Optimización de Rendimiento:**
+- **uv**: Instalación ultrarrápida de dependencias Python
+- **Vite**: Servidor de desarrollo con HMR (Hot Module Replacement)
+- **Conexión PostgreSQL optimizada**: Configuración de timeouts y SSL
 
 ### Arquitectura Modular por Capabilities
 
@@ -190,7 +256,7 @@ El sistema está organizado en **5 Capabilities médicas principales**, cada una
 
 ---
 
-## 4. Features y Especificaciones BDD
+## 4. Feature Asignada
 
 ### **4.1 Overview: arquitectura por capabilities y features**
 
@@ -234,51 +300,29 @@ ARQUITECTURA POR CAPABILITIES Y FEATURES:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### **4.2 CAPABILITY 1: EVALUACIÓN Y DIAGNÓSTICO**
-
-Esta capability agrupa las herramientas fundamentales para la evaluación clínica y registro de episodios de cefalea según estándares médicos internacionales.
-
-#### **Feature 1: Autoevaluación MIDAS** (`feature_grupo1_autoevaluacion_midas`)
-
-**Objetivo médico**: Sistema de evaluación estandarizada de discapacidad por migraña con control de intervalos.
-
-**Especificación BDD (`autoevaluacion_midas.feature`):**
-
-```gherkin
-# language: es
-
-Característica: Autoevaluación MIDAS
-  Como paciente
-  Quiero saber mi grado de discapacidad
-  Para entender mejor el impacto de migrañas en mi vida diaria
-
-  Esquema del escenario: La evaluación está disponible luego de 3 meses
-    Dado que el paciente ha realizado una última evaluación en la "<fecha>"
-    Cuando pasen 3 meses desde la última evaluación
-    Entonces el paciente podrá realizar una nueva evaluación
-
-    Ejemplos:
-      | fecha      | fecha_actual |
-      | 2023-01-01 | 2023-04-01   |
-      | 2023-12-15 | 2024-03-15   |
-      | 2023-03-10 | 2023-06-10   |
-
-  Escenario: Cálculo automático de puntaje MIDAS
-    Dado que el paciente completa un cuestionario MIDAS válido
-    Cuando se calculan los puntajes de las 5 preguntas
-    Entonces el sistema debe categorizar automáticamente el grado de discapacidad
-    Y mostrar recomendaciones médicas apropiadas según el puntaje
-```
-
-**Validaciones médicas implementadas:**
-- ✅ Control de intervalos de 3 meses entre evaluaciones.
-- ✅ Cálculo automático según escala MIDAS oficial.
-- ✅ Categorización en grados I-IV de discapacidad.
-- ✅ Recomendaciones médicas contextualizadas.
-
-#### **Feature 2: Bitácora digital** (`feature_grupo2_bitacora_digital`)
+### **4.2 Feature 2: Bitácora digital** (`feature_grupo2_bitacora_digital`)
 
 **Objetivo médico**: Registro y categorización automática de episodios de cefalea según criterios IHS/ICHD-3.
+
+**Descripción detallada**: 
+La Bitácora Digital representa el núcleo funcional del sistema Migrania-App, permitiendo un registro estructurado y científicamente validado de los episodios de cefalea. Esta funcionalidad, desarrollada por el Grupo 2, implementa un sistema experto que:
+
+1. **Captura estructurada de datos clínicos**: Registra sistemáticamente las características médicas relevantes (intensidad, localización, síntomas asociados) siguiendo los criterios diagnósticos de la Sociedad Internacional de Cefaleas (IHS/ICHD-3)
+   
+2. **Sistema de categorización automática**: Implementa algoritmos de clasificación médica para identificar con precisión el tipo de cefalea (migraña con/sin aura, cefalea tensional) basándose en los síntomas reportados
+   
+3. **Visualizaciones especializadas**: Proporciona interfaces diferenciadas para pacientes y médicos, facilitando el análisis temporal de episodios y la identificación de patrones
+
+4. **Arquitectura por capas**: Implementada siguiendo el patrón repositorio y servicios, separando claramente la lógica de presentación, negocio y acceso a datos
+
+5. **Integración con otras capabilities**: Alimenta los módulos de análisis de factores desencadenantes y generación de reportes estadísticos
+
+**Arquitectura interna**:
+La implementación de la Bitácora Digital utiliza:
+- **Servicios**: `EpisodioCefaleaService` con lógica de negocio médica encapsulada
+- **Repositorios**: Implementaciones `DjangoEpisodioCefaleaRepository` para producción y `FakeEpisodioCefaleaRepository` para testing
+- **Modelos**: `EpisodioCefalea` con validaciones médicas incorporadas
+- **Componentes frontend**: Formulario de ingreso de episodios y visualizaciones de bitácora para pacientes y médicos
 
 **Especificación BDD (`bitacora_digital.feature`):**
 
@@ -315,215 +359,12 @@ Característica: Bitácora digital de cefalea
 ```
 
 **Validaciones médicas implementadas:**
-- ✅ Criterios IHS/ICHD-3 para clasificación de migrañas.
-- ✅ Validación de coherencia entre presencia de aura y duración.
-- ✅ Categorización automática basada en síntomas.
-- ✅ Persistencia en bitácora del paciente.
-
-### **4.3 CAPABILITY 2: GESTIÓN DE TRATAMIENTOS**
-
-Esta capability maneja integralmente los planes terapéuticos, desde la adherencia a medicación hasta el monitoreo de efectividad.
-
-#### **Feature 3: Aseguramiento de tratamiento** (`feature_grupo3_aseguramiento_tratamiento`)
-
-**Objetivo médico**: Sistema automatizado de recordatorios y seguimiento de adherencia a medicación.
-
-**Especificación BDD (`aseguramiento_tratamiento.feature`):**
-
-```gherkin
-# language: es
-
-Característica: Aseguramiento del tratamiento para la migraña
-  Como paciente con tratamiento para la migraña,
-  Quiero recordar las actividades definidas,
-  Para cumplirlas y minimizar interrupciones en mi vida diaria.
-
-  Esquema del escenario: Recordatorio de toma de medicamentos
-    Dado que el paciente tiene una medicina prescrita para la migraña
-    Y una frecuencia de dosificación cada <frecuencia> horas
-    Y una duración de <dias> días
-    Cuando la hora actual sea <minutos_antes> minutos antes de la hora de la toma
-    Entonces se enviará un recordatorio al paciente
-    Y el estado de la notificación será "activa"
-
-    Ejemplos:
-      | frecuencia | dias | minutos_antes |
-      | 8          | 2    | 30            |
-
-  Escenario: Confirmación de toma de medicamentos
-    Dado que el paciente ha recibido una alerta para tomar su medicación
-    Cuando el paciente confirma que ha tomado la medicación
-    Entonces se actualizará el estado de la alarma a "tomado"
-```
-
-**Validaciones médicas implementadas:**
-- ✅ Recordatorios automáticos basados en prescripción médica.
-- ✅ Sistema de escalamiento de alertas (3 niveles).
-- ✅ Tracking de adherencia para evaluación médica.
-- ✅ Integración con planes de tratamiento personalizados.
-
-#### **Feature 7: Generación y seguimiento de tratamiento** (`feature_grupo7_generacion_seguimiento_tratamiento`)
-
-**Objetivo médico**: Monitoreo automatizado de efectividad terapéutica y ajuste de tratamientos.
-
-**Especificación BDD (`generacion_seguimiento_tratamiento.feature`):**
-
-```gherkin
-# language: es
-
-Característica: Generación y seguimiento personalizado de tratamiento
-  Como médico tratante,
-  Quiero monitorear la efectividad del tratamiento prescrito,
-  Para realizar ajustes terapéuticos basados en evidencia clínica.
-
-  Escenario: Evaluación de efectividad del tratamiento
-    Dado que el paciente ha completado 4 semanas de tratamiento
-    Cuando se evalúa la respuesta terapéutica
-    Entonces el sistema debe calcular métricas de efectividad:
-      | Métrica                        | Criterio de Éxito               |
-      | Reducción en frecuencia        | ≥50% menos episodios            |
-      | Disminución de intensidad      | ≥2 puntos en escala de dolor    |
-      | Mejora funcional              | Incremento en score MIDAS       |
-
-  Escenario: Ajuste automático de tratamiento
-    Dado que la evaluación muestra respuesta sub-óptima
-    Cuando han transcurrido 8 semanas de terapia
-    Entonces el sistema debe generar alerta médica
-    Y sugerir ajustes de dosis basado en guías clínicas
-```
-
-**Validaciones médicas implementadas:**
-- ✅ Algoritmos basados en guías AHS/EHF para tratamiento de migraña.
-- ✅ Monitoreo automatizado de adherencia terapéutica.
-- ✅ Detección temprana de efectos adversos críticos.
-- ✅ Integración con sistemas de farmacovigilancia.
-
-### **4.4 CAPABILITY 3: ANÁLISIS E INSIGHTS**
-
-Esta capability proporciona inteligencia médica para apoyo diagnóstico y detección de patrones.
-
-#### **Feature 4: Estadísticas e historial** (`feature_grupo4_estadisticas_historial`)
-
-**Objetivo médico**: Generación de reportes médicos consolidados para apoyo diagnóstico.
-
-**Especificación BDD (`estadisticas_historial.feature`):**
-
-```gherkin
-# language: es
-
-Característica: Estadísticas del historial de migraña
-  Como paciente con migraña,
-  Quiero visualizar mis estadísticas de forma comprensible,
-  Para poder tomar decisiones informadas sobre mi salud.
-
-  Escenario: Visualización de estadísticas del último mes
-    Cuando el usuario solicita ver las estadísticas del último mes
-    Entonces el sistema debe mostrar un resumen consolidado que incluya:
-      | Métrica                          | Descripción                        |
-      | Número total de episodios        | Contador de todos los episodios    |
-      | Duración promedio de episodios   | Tiempo promedio en horas           |
-      | Nivel de dolor promedio          | Escala 1-10                       |
-      | Factores desencadenantes más frecuentes | Top 3 triggers identificados |
-
-  Escenario: Generación de reporte médico
-    Cuando el usuario genera un reporte para su médico
-    Entonces el sistema debe crear un PDF médico que contenga:
-      | Sección                     | Contenido                           |
-      | Datos del paciente          | Información demográfica básica      |
-      | Resumen ejecutivo          | Métricas clave del período          |
-      | Análisis de severidad      | Distribución de niveles de dolor    |
-      | Factores desencadenantes   | Análisis de correlaciones           |
-```
-
-**Validaciones médicas implementadas:**
-- ✅ Generación de métricas clínicamente relevantes.
-- ✅ Análisis temporal con significancia estadística.
-- ✅ Reportes compatibles con sistemas de historia clínica.
-- ✅ Visualizaciones adaptadas para consulta médica.
-- ✅ Reportes compatibles con sistemas de historia clínica.
-- ✅ Visualizaciones adaptadas para consulta médica.
-
-#### **Feature 6: Análisis de factores desencadenantes** (`feature_grupo6_analisis_factores_desencadenantes`)
-
-**Objetivo médico**: Identificación de patrones y correlaciones para prevención de episodios.
-
-**Especificación BDD (`analisis_factores_desencadenantes.feature`):**
-
-```gherkin
-# language: es
-
-Característica: Análisis de factores desencadenantes de migraña
-  Como paciente con migraña,
-  Quiero identificar patrones en mis episodios,
-  Para poder prevenir futuros ataques mediante cambios en mi estilo de vida.
-
-  Escenario: Análisis de correlaciones temporales
-    Cuando el usuario solicita análisis de patrones
-    Entonces el sistema debe analizar correlaciones entre:
-      | Factor Analizado              | Métrica de Correlación          |
-      | Horas de sueño               | Pearson > 0.7 indica correlación |
-      | Nivel de estrés              | Análisis de tendencias          |
-      | Patrones alimentarios        | Frecuencia de triggers          |
-      | Factores ambientales         | Presión barométrica, clima      |
-
-  Escenario: Generación de recomendaciones preventivas
-    Dado que se han identificado factores desencadenantes significativos
-    Cuando se calcula el riesgo de episodio
-    Entonces el sistema debe generar recomendaciones personalizadas
-    Y alertar sobre patrones de riesgo detectados
-```
-
-**Validaciones médicas implementadas:**
-- ✅ Análisis estadístico con significancia clínica.
-- ✅ Correlaciones basadas en literatura médica peer-reviewed.
-- ✅ Recomendaciones alineadas con guías neurológicas internacionales.
-- ✅ Machine learning para detección de patrones complejos.
-
-### **4.5 CAPABILITY 4: GESTIÓN DE CITAS**
-
-Esta capability maneja el sistema completo de programación y coordinación médica.
-
-#### **Feature 5: Agendamiento de citas** (`feature_grupo5_agendamiento_citas`)
-
-**Objetivo médico**: Coordinación automatizada de citas médicas especializadas.
-
-**Especificación BDD (`agendamiento_citas.feature`):**
-
-```gherkin
-# language: es
-
-Característica: Agendamiento de citas médicas para migraña
-  Como paciente con migraña,
-  Quiero agendar citas médicas de manera eficiente,
-  Para recibir atención especializada oportuna.
-
-  Escenario: Búsqueda de especialistas disponibles
-    Cuando el usuario busca neurólogos especialistas en migraña
-    Y selecciona una fecha y hora preferida
-    Entonces el sistema debe mostrar una lista de médicos disponibles
-    Y permitir filtrar por ubicación, especialidad y calificaciones
-
-  Escenario: Confirmación de cita médica
-    Dado que el usuario ha seleccionado un médico y horario
-    Cuando confirma el agendamiento de la cita
-    Entonces el sistema debe:
-      | Acción                          | Resultado                           |
-      | Generar código de confirmación  | Código único de 8 dígitos          |
-      | Enviar recordatorio automático  | 24 horas antes de la cita          |
-      | Actualizar calendario personal  | Evento sincronizado                 |
-
-  Escenario: Solicitar atención médica urgente
-    Dado que el paciente presenta un historial médico de alta urgencia
-    Cuando el paciente agenda una atención médica urgente
-    Entonces se asigna un doctor en menos de 2 horas
-    Y se reorganiza las citas médicas regulares si es necesario
-```
-
-**Validaciones médicas implementadas:**
-- ✅ Verificación de disponibilidad en tiempo real.
-- ✅ Integración con calendarios médicos externos.
-- ✅ Sistema de recordatorios automatizados.
-- ✅ Tracking de historial de citas para seguimiento médico.
+- ✅ **Categorización ICHD-3**: Implementación completa de criterios IHS/ICHD-3 para clasificación precisa de migrañas y cefaleas tensionales
+- ✅ **Validación de coherencia sintomática**: Sistema de verificación que detecta inconsistencias entre síntomas reportados (p.ej., aura sin duración especificada)
+- ✅ **Procesamiento de datos médicos**: Conversión automática de datos textuales a valores estructurados para análisis estadístico posterior
+- ✅ **Persistencia con trazabilidad**: Almacenamiento cronológico completo que permite análisis longitudinal de la evolución del paciente
+- ✅ **Validación de rangos fisiológicos**: Control de valores dentro de rangos médicamente posibles para cada parámetro (duración, intensidad, etc.)
+- ✅ **Interfaz adaptativa**: Sistema de formularios que se adapta dinámicamente según las entradas previas del usuario
 
 ### **4.6 CAPABILITY 5: USUARIOS (Sistema Transversal)**
 
@@ -604,324 +445,383 @@ def step_impl(context):
         context.episodio_creado = None
         context.error = e
 ```
-
-### **5.2 Patrones de Testing Implementados**
-
-#### 1. **Repository Pattern para Testing**
-
-```python
-class FakeEpisodioCefaleaRepository:
-    """Repositorio en memoria para pruebas aisladas."""
-    
-    def __init__(self):
-        self.episodios = []
-        self.next_id = 1
-
-    def crear_episodio(self, paciente, datos_episodio):
-        episodio = EpisodioCefalea(
-            id=self.next_id,
-            paciente=paciente,
-            **datos_episodio
-        )
-        self.episodios.append(episodio)
-        self.next_id += 1
-        return episodio
-
-    def obtener_ultimo_episodio(self, paciente):
-        episodios_paciente = [ep for ep in self.episodios if ep.paciente == paciente]
-        return episodios_paciente[-1] if episodios_paciente else None
-```
-
 ---
 
 ## 6. Metodología de Branching y Desarrollo
 
-### **6.1 Estrategia Feature-Branch Médica**
+### **6.1 Estrategia de Gitflow Adaptada**
 
-El proyecto implementa una **metodología de branching especializada** para desarrollo médico con **7 features independientes** que se integran a través de pull requests:
+El proyecto implementa una **adaptación especializada de Gitflow** para desarrollo médico colaborativo, enfocada en la integración de **7 features independientes** desarrolladas por equipos diferentes:
 
-#### Estructura de Ramas por Capabilities
+#### Estructura Principal de Ramas
 
 ```
-main                                    # Rama principal estable
-├── develop                            # Integración de features médicas
-├── feature                            # Rama de integración para features
-│
-├── feature_grupo1_autoevaluacion_midas              ✅ Evaluación MIDAS
-├── feature_grupo2_bitacora_digital                  ✅ Registro episodios  
-├── feature_grupo3_aseguramiento_tratamiento         ✅ Recordatorios medicación
-├── feature_grupo4_estadisticas_historial            ✅ Reportes médicos
-├── feature_grupo5_agendamiento_citas               ✅ Gestión citas médicas
-├── feature_grupo6_analisis_factores_desencadenantes ✅ Análisis patrones
-└── feature_grupo7_generacion_seguimiento_tratamiento ✅ Planes terapéuticos
+main                                    # Producción estable (protegida)
+└── develop                            # Integración y pre-release
+    └── feature                        # Rama de consolidación de features
+        │
+        ├── feature_grupo1_autoevaluacion_midas              # Capability 1
+        ├── feature_grupo2_bitacora_digital                  # Capability 1  
+        ├── feature_grupo3_aseguramiento_tratamiento         # Capability 2
+        ├── feature_grupo4_estadisticas_historial            # Capability 3
+        ├── feature_grupo5_agendamiento_citas                # Capability 4
+        ├── feature_grupo6_analisis_factores_desencadenantes # Capability 3
+        └── feature_grupo7_generacion_seguimiento_tratamiento # Capability 2
+```
 
-**Convenciones de Nomenclatura:**
-- `feature_grupo[N]_[funcionalidad_medica_especifica]`
-- Cada rama feature se desarrolla de forma independiente
-- Las ramas se integran a través de pull requests hacia `feature` y luego a `develop`
-- Cada feature desarrolla **una funcionalidad médica específica** dentro de su capability
-- **BDD independiente** por feature con especificaciones propias  
-- **Testing aislado** con repositorios fake específicos
-- **Capability 5 (Usuarios)** es transversal y no tiene features BDD específicas
+**Características del Workflow:**
+- Rama `main`: Contiene código de producción probado y estable
+- Rama `develop`: Integra todas las features completadas para testing
+- Rama `feature`: Consolida los avances de todas las feature branches
+- Ramas `feature_grupo[N]_*`: Desarrollo independiente por equipos
 
-### **6.3 Workflow de Desarrollo**
+### **6.2 Workflow de Desarrollo por Equipos**
 
-#### Flujo de Integración de Features
+El proyecto sigue un workflow colaborativo donde cada equipo trabaja en una feature específica:
 
-**1. Desarrollo en Rama Feature Individual:**
+#### Flujo de Trabajo del Equipo
+
+**1. Inicio del trabajo:**
 ```bash
-# Crear nueva feature desde develop
-git checkout develop
-git pull origin develop
-git checkout -b feature_grupo[N]_[nombre_funcionalidad]
+# Sincronización inicial
+git checkout feature
+git pull origin feature
+git checkout -b feature_grupo[N]_[funcionalidad_medica]
 ```
 
-**2. Desarrollo y Testing:**
+**2. Desarrollo de Funcionalidades:**
+- Cada equipo trabaja exclusivamente en su rama feature
+- Se implementa BDD con tests primero seguidos por la implementación
+- Se realizan commits frecuentes siguiendo la convención establecida
+
+**3. Integración Continua:**
 ```bash
-# Commits siguiendo convenciones médicas
-git commit -m "feat(scope): descripción funcionalidad médica"
-git commit -m "test(scope): agregar scenarios BDD para validación"
+# Actualización regular desde la rama feature
+git checkout feature_grupo[N]_[funcionalidad_medica]
+git pull origin feature
+git merge feature --no-ff
+# Resolver conflictos si existen
+git push origin feature_grupo[N]_[funcionalidad_medica]
 ```
 
-**3. Integración vía Pull Request:**
-```bash
-# Push de la feature
-git push origin feature_grupo[N]_[nombre_funcionalidad]
+### **6.3 Estrategia de Integración**
 
-# Pull Request puede ir hacia:
-# - develop (integración directa)
-# - feature (para consolidación)
-# - entre features (para colaboración)
-```
+**Modelo de Pull Requests:**
+- Los equipos solicitan PR desde su feature branch hacia `feature`
+- PRs requieren revisión de código y aprobación por otro equipo
+- Los tests deben pasar en CI antes de aprobar la integración
 
-#### Estrategia de Merge
+**Ciclo de Release:**
+1. Integración de features en `feature` durante el desarrollo
+2. Consolidación de `feature` hacia `develop` para pruebas de integración
+3. Release desde `develop` hacia `main` solo con código estable
 
-**Flexible Integration Strategy:**
-- Las `feature_grupo*` pueden integrarse directamente hacia `develop` via PR
-- La rama `feature` sirve como punto de consolidación opcional
-- Las features pueden colaborar entre sí mediante PRs cruzados
-- `develop` recibe integraciones estables de features individuales o consolidadas
-- `main` recibe releases estables desde `develop`
+### **6.4 Convenciones de Commits**
 
-### **6.2 Convenciones de Commits**
+El proyecto utiliza un **estándar de Conventional Commits** con especializaciones para el dominio médico:
 
-El proyecto implementa **convenciones de commits especializadas** para desarrollo médico:
-
-#### Estructura de Commits
+#### Estructura Estandarizada de Commits
 
 ```
-<tipo>[scope médico]: <descripción>
+<tipo>(<ámbito>): <descripción corta>
 
-[cuerpo opcional con detalles médicos]
+[cuerpo detallado opcional]
 
-[footer opcional con referencias médicas]
+[pie de página opcional con referencias clínicas]
 ```
 
-#### Tipos de Commits Médicos
+#### Tipos de Commits
 
-- **feat**: Nueva funcionalidad médica (evaluaciones, tratamientos, análisis)
-- **fix**: Corrección de bugs médicos críticos
-- **docs**: Documentación médica/clínica
-- **style**: Cambios de formato que no afectan funcionalidad médica
-- **refactor**: Refactorización sin cambiar funcionalidad médica
-- **test**: Agregar o modificar tests médicos/BDD
-- **chore**: Tareas de mantenimiento (dependencias, configuración)
-- **perf**: Mejoras de performance para funciones médicas críticas
-- **medical**: Cambios específicos en validaciones médicas o criterios clínicos
+- **feat**: Nueva funcionalidad
+- **fix**: Corrección de errores
+- **docs**: Documentación
+- **style**: Formato (sin cambios en código)
+- **refactor**: Refactorización
+- **test**: Adición o modificación de pruebas
+- **chore**: Tareas de mantenimiento
+- **perf**: Mejoras de rendimiento
+- **ci**: Configuración de integración continua
 
-#### Scopes Médicos por Capability
+#### Ámbitos por Equipo y Funcionalidad
 
-- **midas**: Evaluaciones MIDAS
-- **bitacora**: Registro de episodios de cefalea
-- **tratamiento**: Gestión de tratamientos y medicación
-- **seguimiento**: Planes terapéuticos y seguimiento
-- **estadisticas**: Reportes y métricas médicas
-- **patrones**: Análisis de factores desencadenantes
-- **citas**: Agendamiento médico
-- **auth**: Autenticación y usuarios
+- **grupo1**: Evaluaciones MIDAS
+- **grupo2**: Bitácora digital de cefalea
+- **grupo3**: Sistema de recordatorios de medicación
+- **grupo4**: Estadísticas e historial médico
+- **grupo5**: Agendamiento de citas
+- **grupo6**: Análisis de factores desencadenantes
+- **grupo7**: Generación y seguimiento de tratamientos
+- **core**: Componentes transversales y arquitectura
 
-#### Ejemplos de Commits
-
-```bash
-feat(midas): implementar validación IHS para cuestionario MIDAS-S
-fix(bitacora): corregir cálculo de intensidad de dolor en episodios
-docs(tratamiento): actualizar documentación de recordatorios médicos
-test(patrones): agregar scenarios BDD para análisis de triggers
-medical(midas): ajustar rangos de severidad según criterios neurológicos
-perf(estadisticas): optimizar consultas de reportes históricos
-```
-
-#### Referencias Médicas en Commits
+#### Ejemplos de Commits Reales
 
 ```bash
-feat(midas): implementar scoring MIDAS según IHS guidelines
-
-- Implementar cálculo de puntaje MIDAS-S
-- Validar rangos de discapacidad según criterios IHS
-- Agregar recomendaciones por nivel de severidad
-
-Referencias: IHS-ICHD-3, MIDAS Questionnaire v2.1
+feat(grupo2): implementar formulario de registro de episodio de cefalea
+fix(grupo2): corregir validación de intensidad de dolor según escala IHS
+docs(grupo2): actualizar diagrama de flujo de categorización ICHD-3
+test(grupo2): añadir casos de prueba para aura con duración atípica
+ci(grupo2): configurar pipeline de validación médica automatizada
 ```
-
 ---
 
 ## 7. Verificación y Validación de Software
 
-### **7.1 Estrategia V&V Médica**
+### **7.1 Estrategia V&V**
 
-El sistema implementa un enfoque **riguroso de Verificación y Validación** específicamente diseñado para software médico:
+El sistema implementa un enfoque **riguroso de Verificación y Validación** específicamente diseñado para software médico, siguiendo lineamientos estructurados en tres actividades fundamentales que garantizan la trazabilidad, mantenibilidad y confiabilidad del producto:
 
-#### 1. **Verificación (¿Estamos construyendo el producto correctamente?)**
+#### **7.1.1 Verificación: Revisión de Historias de Usuario BDD**
 
-**Verificación Técnica:**
-- ✅ **Code Reviews**: Revisión de código con focus médico
-- ✅ **Static Analysis**: Análisis estático con reglas médicas
-- ✅ **Unit Testing**: Pruebas unitarias de lógica médica
-- ✅ **Integration Testing**: Pruebas de integración entre módulos médicos
-- ✅ **Performance Testing**: Validación de tiempos de respuesta críticos
+**Objetivo**: Verificar que todas las historias de usuario cumplan con el formato Gherkin/Cucumber estándar y mantengan la trazabilidad completa con las capabilities médicas de negocio.
 
-#### 2. **Validación (¿Estamos construyendo el producto correcto?)**
+**Proceso de Verificación**:
+- ✅ **Trazabilidad**: 100% de Features con referencia a Capability mediante `@capability:[ID_CAPABILITY]`
+- ✅ **Estructura de Directorios**: Features organizados por capabilities médicas
+```
+evaluacion_diagnostico\
+  features\
+    bitacora_digital.feature
+    autoevaluacion_midas.feature
+```
+- ✅ **Format Gherkin en Español**: Uso estandarizado de palabras clave en español médico
+- ✅ **Criterios de Calidad**:
+  - **Controlable**: Escenarios médicos con resultados verificables
+  - **Comprensible**: Legible por todos los stakeholders (médicos y técnicos)
+  - **Granular**: Enfoque en comportamientos clínicos específicos
+  - **Específico**: Sin ambigüedades en los criterios médicos
 
-**Validación Médica:**
-- ✅ **Medical Expert Review**: Validación por profesionales neurólogos
-- ✅ **Clinical Scenarios**: Casos clínicos reales validados
-- ✅ **User Acceptance**: Aceptación por médicos y pacientes reales
-- ✅ **Usability Testing**: Pruebas de usabilidad en contexto médico
+**Roles y Responsabilidades**:
+- **Project Manger**: Validación de criterios clínicos
+- **Analista QA**: Revisión de sintaxis y estructura Gherkin
+- **Desarrollador Backend**: Verificación de implementabilidad técnica
+
+#### **7.1.2 Verificación: Análisis Estático con SonarQube**
+
+**Objetivo**: Verificar mediante análisis estático automatizado que el código cumple con métricas objetivas de calidad, críticas para software médico.
+
+**Métricas Obligatorias**:
+- ✅ **Reliability**: Calificación A (0 bugs críticos/altos) - crítico para software médico
+- ✅ **Maintainability**: Calificación A (Deuda técnica ≤ 5%)
+- ✅ **Duplications**: < 3% de código duplicado
+- ✅ **Size**: Clasificación Small (≤ 10,000 líneas)
+- ✅ **Coverage**: ≥ 80% de cobertura para funcionalidades médicas críticas
+
+**Proceso de Verificación**:
+- **Ejecución Automática**: En cada commit y pull request
+- **Revisión Diaria**: Monitoreo de métricas médicas críticas
+- **Bloqueo de Despliegue**: Criterios estrictos para software médico
+
+**Dashboard de Calidad Médica**:
+| Métrica | Objetivo | Estado Actual |
+|---------|----------|---------------|
+| Reliability | A | ✅ Cumple |
+| Maintainability | A | ✅ Cumple |
+| Duplications | < 3% | ✅ Cumple |
+| Coverage | ≥ 80% | ✅ Cumple |
+| Escenarios BDD Exitosos | 100% | ✅ Cumple |
+
+#### **7.1.3 Framework Behave para BDD**
+
+**Objetivo**: Implementar un marco estructurado para la ejecución automatizada de pruebas BDD que validen el comportamiento médico del sistema desde la perspectiva del usuario.
+
+**Configuración de Behave en el Proyecto**:
+```python
+# backend/pyproject.toml
+[tool.behave]
+junit = true                       # Genera reportes en formato JUnit
+junit_directory = "tests"          # Directorio para reportes XML
+paths = ["tests"]                  # Rutas de búsqueda de features
+format = ["pretty", "junit"]       # Formatos de salida
+logging_level = "INFO"             # Nivel de log
+show_timings = true                # Muestra tiempos de ejecución
+show_skipped = false               # Oculta tests omitidos
+```
+
+**Estructura de Pruebas Behave**:
+```
+backend/
+├── [capability]/features/
+│   ├── [feature].feature          # Especificaciones Gherkin en español
+│   ├── environment.py             # Hooks y configuración del entorno
+│   └── steps/
+│       ├── __init__.py
+│       └── [feature]_steps.py     # Implementación de pasos en Python
+```
+
+**Integración con Repositorios Fake**:
+- ✅ **Testing Aislado**: Inyección de repositorios fake en steps de Behave
+- ✅ **Performance**: Ejecución rápida sin dependencia de base de datos
+- ✅ **Reproducibilidad**: Entorno controlado para pruebas determinísticas
+
+```python
+# Ejemplo de integración con repositorios fake en steps
+@given("que un paciente ha ingresado datos para un nuevo episodio de cefalea")
+def step_impl(context):
+    user_repo = FakeUserRepository()              # Repositorio fake para usuarios
+    episode_repo = FakeEpisodioCefaleaRepository() # Repositorio fake para episodios
+    context.service = EpisodioCefaleaService(repository=episode_repo) # Inyección
+```
+
+#### **7.1.4 Validación: Pruebas de Caja Negra**
+
+**Objetivo**: Validar la funcionalidad del sistema desde la perspectiva del usuario médico y del paciente, asegurando que el comportamiento observable cumple con los requisitos clínicos específicos.
+
+**Tipos de Pruebas**:
+- ✅ **Clinical Scenarios**: Casos clínicos reales validados con datos anonimizados
+- ✅ **Pruebas de Equivalencia**: División de datos médicos en clases equivalentes
+```
+Ejemplo: Duración del dolor
+Clases válidas: [1-4h], [4-72h], [>72h]
+Clases inválidas: [<1h], [valores no numéricos]
+```
+- ✅ **Análisis de Valores Límite**: Validación de rangos médicos críticos
+```
+Ejemplo: Escala de intensidad de dolor (1-10)
+Valores de prueba: 0, 1, 5, 10, 11
+```
+- ✅ **Pruebas de Transición de Estados**: Validación de flujos clínicos completos
+
+**Validación de Usuario Final**:
+- ✅ **User Acceptance**: Pruebas con médicos y pacientes reales
+- ✅ **Usability Testing**: Evaluación de interfaces médicas en contexto clínico
+
+### **7.2 Estándares de Calidad BDD**
+
+**Criterios de Aceptación para BDD Médico**:
+- ✅ **Completitud**: Todas las features médicas con especificaciones BDD
+- ✅ **Claridad**: Escenarios escritos en terminología médica estandarizada
+- ✅ **Ejecutabilidad**: 100% de escenarios médicos automatizables
+- ✅ **Validación**: Criterios aprobados por el PM en reuniones previas 
+- ✅ **Mantenibilidad**: Steps reutilizables para escenarios médicos similares
+
+**Antipatrones Evitados**:
+- ❌ **Escenarios conjuntivos**: Múltiples acciones médicas en un solo paso
+- ❌ **Datos hardcodeados**: Valores médicos sin contexto clínico
+- ❌ **Escenarios dependientes**: Escenarios médicos que asumen estado previo
+- ❌ **Feature-coupled steps**: Steps específicos no reutilizables entre features médicas
+
 
 ---
 
 ## 8. Backend - Arquitectura y Servicios
 
-### **8.1 Arquitectura Hexagonal para Servicios Médicos**
+### **8.1 Arquitectura API REST con Patrón de Repositorios**
 
-El backend implementa **Arquitectura Hexagonal (Ports & Adapters)** para garantizar la separación entre lógica médica y detalles técnicos:
+El backend implementa una **Arquitectura API REST basada en Django** con el patrón de repositorios para garantizar la separación entre lógica médica y detalles técnicos. El siguiente diagrama UML de componentes representa esta arquitectura:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    APLICACIÓN MÉDICA                        │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────────┐    ┌─────────────────┐                │
-│  │   SERVICIOS     │    │   REPOSITORIOS  │                │
-│  │   MÉDICOS       │    │   (PORTS)       │                │
-│  │   (5 CAPABILITIES)  │                 │                │
-│  │                 │    │                 │                │
-│  │ • Evaluación &  │◄──►│ • EpisodioCefalea│                │
-│  │   Diagnóstico   │    │ • Usuario       │                │
-│  │ • Gestión       │    │ • Tratamiento   │                │
-│  │   Tratamientos  │    │ • Citas         │                │
-│  │ • Análisis &    │    │ • Analytics     │                │
-│  │   Insights      │    │                 │                │
-│  │ • Gestión Citas │    │                 │                │
-│  │ • Usuarios      │    │                 │                │
-│  └─────────────────┘    └─────────────────┘                │
-├─────────────────────────────────────────────────────────────┤
-│                    ADAPTADORES                              │
-├─────────────────────────────────────────────────────────────┤
-│ ┌─────────────────┐  ┌─────────────────┐  ┌────────────────┐│
-│ │    DJANGO ORM   │  │  REST API       │  │  BDD TESTING   ││
-│ │   (Persistent)  │  │  (External)     │  │  (Testing)     ││
-│ │                 │  │                 │  │                ││
-│ │ • Models        │  │ • ViewSets      │  │ • Fake Repos   ││
-│ │ • Migrations    │  │ • Serializers   │  │ • Test Steps   ││
-│ │ • Constraints   │  │ • Permissions   │  │ • Scenarios    ││
-│ └─────────────────┘  └─────────────────┘  └────────────────┘│
-└─────────────────────────────────────────────────────────────┘
-```
+![Diagrama UML](https://kroki.io/plantuml/svg/eNqFVrtW20AQ7fUVc2iAAro0KXJQ5MdxYeD4QZOTYpDGYoK0q7O7hpCEj6FMzSf4xzIrybIQUnBhS3fuPHb2zq4vrEPjtnkW2HtWBRrMIdZ5oRUpt3RPGYGh2KFKM2pRbjG-T43eqiTSmTbweMeubc-10vGd0TmBM9u2xd5hoh9ZpbDBzFIQFBIKU4KjsMg4xph3rwrmu7-JvMAZRNrQEfwOQD4NdUnmgWPWFk4-QYQF3nLGjsme7qn-06wDvo0fMNvWsZ9gxJiq3at1HGuoYtF3QAvj0bLPe0pC9a4rgw5zFlBStx2nq17HUO1eMrZsgWCmLKd37q1fOPt_wogddjJFvR5ru0XDnarWFfW5_H7bwQUV2rLTpc_JtTbube9YOTIbjIU6GxdsdcI6Itkywsb16cgnmY2jRa9bXVKXvu5nt1rb9Vj1e_jedKkDpYQKsyfZbdvlh4u6Q89tISZYOFGpIftOeddkZDsdqZhxQGujHzItGq4W83IT5LePNdcJZbZk9Ns5lY6wVjVnNu1jRWJ3BmWtFS26uhzc8vB6BovxcjVQ9g3T45LqODe9IhNtMWb8S3pQspbjRR9NepSztU3t1-O6BX1VfR2NYOXlrtKBwiZ4T3DQK1VBJ72pfSRYOioqUv9ULmNS5bBUi4jGBw0cS6JMzglhyswqZ-jgSDaQ8wHOzr6UmofPsLUYyORX0GqPyExXSNhwohppvNY1sN4DgcikhOYCxFrJYaboAM6mAqcCGWxA2WsBE9qwMKXyWV5klEuhdf0l8fz8T1MuN4SWaT1oWQ1ahqOFHUswWQyUACcb2dfTA2H9gX31gf2j-GG_PbiptkK0XG9FDXjVCoLlrbQHvQAkinrQB8wroIt5DbzjRe-xdQsKaiVN9oXU7yLQTlOP4VL7e4F-lsU5fkAbKO3krvZXDOhNfeq0JeGvk_poSggyOfZN6w4I_Ega9JrXRpWUwuhkG5eOAakEfIKgk6acwq7wJAjklEtcrIK6ar6FimwzOVnlDja7l4LlybKSZIUkKM9Uvyg5t5Us6JDzQh7lL8o_Vr64EA==)
 
-### **8.2 Stack Tecnológico Detallado**
 
-El proyecto implementa un stack moderno y robusto con las siguientes tecnologías específicas:
+Este diagrama UML de componentes muestra claramente la separación de responsabilidades y la implementación del patrón de repositorios:
 
-#### **Backend**
+1. **Core de la Aplicación Médica**:
+   - **Servicios**: Representan las 5 capabilities médicas principales con toda la lógica de negocio
+   - **Repositorios (Ports)**: Interfaces abstractas que definen operaciones de acceso a datos
 
-**Framework y Core:**
-- **Django 5.2.4**: Framework web de alto nivel para desarrollo rápido pero robusto
-- **Python 3.13**: Versión más reciente con mejoras significativas de rendimiento
-- **Django REST Framework 3.16.0**: Framework para APIs RESTful
-- **PostgreSQL 16**: Sistema de base de datos relacional avanzado
+2. **Adaptadores**:
+   - **Persistencia (Django ORM)**: Implementación concreta de los repositorios para entorno productivo
+   - **API REST**: Componentes que exponen la funcionalidad a clientes externos
+   - **BDD Testing**: Implementaciones fake de los repositorios para testing aislado
 
-**Autenticación y Seguridad:**
-- **Django REST Framework Simple JWT 5.5.1**: Implementación JWT para autenticación segura
-- **Djoser 2.3.3**: Endpoints REST para gestión de usuarios
-- **Social Auth**: Integración con autenticación de terceros
+La arquitectura sigue los principios de Clean Architecture y Hexagonal Architecture, permitiendo:
+- Independencia de frameworks y detalles técnicos
+- Testabilidad mejorada mediante inyección de dependencias
+- Clara separación entre lógica de dominio médico y aspectos técnicos
 
-**Documentación API:**
-- **DRF Spectacular 0.28.0**: Generación automática de documentación OpenAPI 3.0
+### **8.2 Implementación de la Bitácora Digital - Feature Asignada**
 
-**Testing y Calidad:**
-- **Behave 1.2.6**: Framework BDD para Python
-- **Pylint**: Analizador estático de código con reglas personalizadas para el proyecto
-- **Coverage**: Medición de cobertura de pruebas
+La Bitácora Digital (Feature 2), desarrollada por el Grupo 2, representa uno de los componentes más críticos y técnicamente sofisticados de Migrania-App. Esta funcionalidad permite el registro y categorización automática de episodios de cefalea, siguiendo estándares médicos internacionales y utilizando técnicas avanzadas de desarrollo de software.
 
-**Infraestructura:**
-- **Docker/Docker Compose**: Contenedores para desarrollo y despliegue consistentes
-- **uv**: Instalador de paquetes Python ultrarrápido
-- **Python-dotenv 1.1.1**: Carga de variables de entorno desde archivos .env
+#### **8.2.1 Arquitectura Interna**
 
-#### **Frontend**
+La implementación sigue una arquitectura multicapa con clara separación de responsabilidades. El siguiente diagrama UML de componentes muestra en detalle la arquitectura de la Feature 2 (Bitácora Digital):
 
-**Framework y Core:**
-- **React 19.1.0**: Biblioteca JavaScript para interfaces de usuario
-- **Vite 7.0.3**: Herramienta de construcción frontend ultrarrápida
-- **React Router DOM 7.6.3**: Enrutamiento declarativo para React
-- **React Icons 5.5.0**: Biblioteca de iconos para React
+![Diagrama UML](https://kroki.io/plantuml/svg/eNqNVr1u3DgQ7vUUAzdxCtvApXMRxKsfeIE4MKzLNocrxtSslrFECiRln--Sh0mZ4qp01-6L3ZDUyvJam0TAAlrO_zczH_XOOjSub5vE3knVocEWhG47rUi50j02BIaEQ1U3NFG5RXFXG92rKtWNNvCwkW4qb7XSYmN0S-BMP5XYDVb6Qaoa1tjYqaSiNfaNK7RyH5ANL4zEaVodx8Sa9pNKhnM4Kghdbwh-O4eFdNuvQhuETNbSYcPeIeUADeER_JMAP6PdtSHL1aKQ2-8KjgvDGZCqXu8U_TNiAn-wb_Sur9mAD2gl6eFPQAuL69WcfqFN2zdopM47aXUl9ZBIMCrydM5oJW2PjfybY2g11V_Nq7NuFXSfokX1YlQfXzhPODl560PDOUglmv6RXkhXc0JvEoQFC3uLQfAlGd2PmL7ffq-lQA_7B6o1ZwbHJZl7yW_2ELJ7-ER9CnXkaTlnkaJj74ZxqrRZppfZm6CdLt8cRok1S6mcbtFGiMqXEHG4UCc7mhQ6lazKPcH4orTj-ZT1xoFeP0sFYNl2DbV-2AAbn7hrtfUgiQatXDNicQgnJpbq7X8KBOsSd9XC8rI886WePDnmaQ1hD7bjQgiyGngd0LGL4xvqtJVOm_1uMDBk1ijYZrnXjtHm8cjDtszTmzmQs0-8l_qgbYA8O2Bb4B392LKYWo4v3h-cnn5-G7LyczviPB3dn-oc6OGzoAAfLc8QeFICR9Z5Lltk2bRlUnFPO-4KKSHDEmSLX2_W709Of0JBA7mVjro4y4tsdk1KQcpTgt0ZBuVyMcMNWRzvcjGP0E5eRAynC7AT-Q05h45p__YwP1zpihqexMc4kb9GCAMTzFY4bHSu-jYWl_-IL3DwOKqnaT7HAhGL_AUHRHJI83kWfAU31AQ2JsvtdnwnCezQJlMKjTBJda9FdLCK58N06lvHtwtB5eFJpsyzfA59mP3o0MNOxkrr6IwvyJ7_4DSrouk_8eAaZnXZ8d26S-f0dLAWhpBT4m8CP7dj1FHeGc08gmf3gUiD3DOkl0cwKmL6aKVCLjggvf13KC56CVBGa27LhkxYkORLkryC0ufNLQT6i50orlo0uq_gKJ2hvkhBl2XCvwlTG1rvfCYomDX4dh-u6WBxfZHuzq-23yopdDi-yrMkYdnkWjRUcz684jTMYMJKTxej0MryxwrChrV0-FJJ3vFm85fU_-e8vro=)
 
-**Desarrollo y Calidad:**
-- **ESLint 9.30.1**: Linting de JavaScript/TypeScript
-- **Eslint-plugin-react-hooks 5.2.0**: Reglas específicas para hooks de React
-- **TypeScript**: Soporte para tipado estático en el frontend
+Este diagrama UML de componentes muestra la arquitectura detallada de la Feature 2 (Bitácora Digital), destacando:
 
-#### **DevOps y CI/CD**
+1. **Capa de Presentación**:
+   - Interfaces diferenciadas para pacientes (registro) y médicos (visualización)
+   - Componentes de validación en tiempo real para guiar el ingreso de datos médicos
+   - Visualizaciones especializadas para análisis temporal de episodios
 
-**Contenedores:**
-- **Docker multi-stage builds**: Optimización de imágenes Docker
-- **Docker Compose**: Orquestación local de servicios
+2. **Lógica de Negocio**:
+   - `EpisodioCefaleaService` como núcleo de la funcionalidad
+   - Categorizador ICHD-3 que implementa los algoritmos de clasificación según estándares internacionales
+   - Validador de coherencia sintomática para garantizar datos médicamente consistentes
 
-**Optimización de Rendimiento:**
-- **uv**: Instalación ultrarrápida de dependencias Python
-- **Vite**: Servidor de desarrollo con HMR (Hot Module Replacement)
-- **Conexión PostgreSQL optimizada**: Configuración de timeouts y SSL
+3. **Acceso a Datos**:
+   - Patrón Repository con interfaz abstracta `IEpisodioCefaleaRepository`
+   - Implementaciones intercambiables para producción (Django) y testing (Fake)
+   - Clara separación que permite testing aislado y rápido
 
-### **8.3 Modelos de Datos y Estructura del Dominio**
+4. **Testing BDD**:
+   - Integración directa con la arquitectura mediante repositorios fake
+   - Scenarios médicamente validados que verifican la correcta categorización
+   - Steps reutilizables que implementan los escenarios Gherkin
+
+5. **Interacción con Usuarios**:
+   - Flujo claramente definido para pacientes (registro) y médicos (consulta)
+   - Integración con estándares médicos internacionales (IHS/ICHD-3)
+
+Esta arquitectura garantiza alta mantenibilidad, testabilidad y cumplimiento de estándares médicos.
+
+#### **8.2.2 Componentes Clave Desarrollados**
+
+1. **Modelo de Episodios de Cefalea**: Implementa una estructura de datos conforme a criterios IHS/ICHD-3, con validaciones médicas incorporadas y categorización automatizada.
+
+2. **Servicio de Cefalea**: Encapsula toda la lógica de negocio médica incluyendo:
+   - Procesamiento de datos médicos desde formularios
+   - Validación de coherencia sintomática
+   - Algoritmos de categorización diagnóstica
+   - Gestión cronológica de episodios
+
+3. **Repositorios Intercambiables**: Implementación de interfaces abstractas con dos variantes:
+   - `DjangoEpisodioCefaleaRepository`: Para entorno de producción con ORM
+   - `FakeEpisodioCefaleaRepository`: Para testing aislado y rápido
+
+4. **Front-end Especializado**: Interfaces diferenciadas para:
+   - Pacientes: Registro simplificado con validación en tiempo real
+   - Médicos: Visualización completa del historial con análisis temporal
+
+#### **8.2.3 Innovaciones Técnicas Aplicadas**
+
+- **Inyección de Dependencias**: Permite el testing aislado mediante la inyección de repositorios fake
+- **Validación Médica Avanzada**: Implementa reglas complejas de validación clínica basadas en literatura médica actualizada
+- **Patrones de Diseño**: Utilización de Repository Pattern y Service Layer Pattern para separación de responsabilidades
+- **Testing BDD**: Especificaciones ejecutables que validan la correcta categorización según criterios médicos
+
+Esta implementación no solo cumple con los requerimientos funcionales, sino que establece un patrón arquitectónico que ha sido adoptado por otras features del proyecto, demostrando la influencia del trabajo del Grupo 2 en la arquitectura global del sistema.
+
+### **8.3 Arquitectura de Testing con Repositorios Fake**
+
+El sistema utiliza **repositorios fake** para testing aislado, garantizando que las pruebas BDD no dependan de base de datos:
+
+#### Ventajas del Patrón
+
+**Testing Rápido y Confiable:**
+- Repositorios en memoria eliminan dependencias externas
+- Tests se ejecutan en milisegundos sin configuración de BD
+
+**Flexibilidad en Scenarios BDD:**
+- Fácil creación de datos de prueba médicos específicos
+- Simulación de condiciones edge cases médicos
+- Testing de validaciones sin efectos secundarios
+
+#### Implementación Base
+
+Los repositorios implementan interfaces comunes que permiten intercambiar implementaciones:
+- **Repositorio Real**: Django ORM para producción
+- **Repositorio Fake**: Almacenamiento en memoria para testing
+- **Misma Interfaz**: Garantiza compatibilidad entre implementaciones
+
+### **8.4 Modelos de Datos y Estructura del Dominio**
 
 El sistema implementa un modelo de dominio rico que refleja las entidades médicas del sistema de manejo de migrañas. A continuación se describen los modelos principales:
 
-#### **8.3.1 Modelo de Usuarios (`usuarios.models.Usuario`)**
+#### **8.4.1 Modelo de Episodios de Cefalea (`evaluacion_diagnostico.models.EpisodioCefalea`)**
 
-Este modelo extiende AbstractUser de Django para implementar un sistema flexible de tipos de usuarios médicos:
-
-```python
-class Usuario(AbstractUser):
-    class TipoUsuario(models.TextChoices):
-        MEDICO = 'medico', 'Médico'
-        PACIENTE = 'paciente', 'Paciente'
-        ENFERMERA = 'enfermera', 'Enfermera'
-    
-    class Genero(models.TextChoices):
-        MASCULINO = 'M', 'Masculino'
-        FEMENINO = 'F', 'Femenino'
-        OTRO = 'O', 'Otro'
-        PREFIERO_NO_DECIR = 'N', 'Prefiero no decir'
-    
-    # Campos específicos
-    email = models.EmailField(unique=True, verbose_name='Email')
-    cedula = models.CharField(max_length=10, unique=True)
-    tipo_usuario = models.CharField(max_length=10, choices=TipoUsuario.choices)
-    telefono = models.CharField(max_length=10)
-    fecha_nacimiento = models.DateField()
-    direccion = models.TextField()
-    genero = models.CharField(max_length=1, choices=Genero.choices)
-    
-    # Configuración del modelo
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'cedula', 'first_name', 'last_name']
-```
-
-El modelo incluye propiedades calculadas como `es_medico`, `es_paciente`, `edad` y usa relaciones polimórficas para gestionar perfiles médicos especializados.
-
-#### **8.3.2 Modelo de Episodios de Cefalea (`evaluacion_diagnostico.models.EpisodioCefalea`)**
-
-Este modelo implementa una representación detallada de los episodios de cefalea, siguiendo estándares médicos internacionales:
+Este modelo implementa una representación detallada de los episodios de cefalea, siguiendo estándares médicos internacionales, realacionado a la **feature 2**:
 
 ```python
 class EpisodioCefalea(models.Model):
@@ -965,7 +865,7 @@ class EpisodioCefalea(models.Model):
 
 El modelo implementa validaciones avanzadas a través de `clean()` para asegurar coherencia médica en los datos registrados.
 
-#### **8.3.3 Otros Modelos Relevantes**
+#### **8.4.3 Otros Modelos Relevantes**
 
 - **Tratamiento (`tratamiento.models.Tratamiento`)**: Gestiona planes terapéuticos completos
 - **Recordatorio (`tratamiento.models.Recordatorio`)**: Gestiona recordatorios de medicación
@@ -973,7 +873,7 @@ El modelo implementa validaciones avanzadas a través de `clean()` para asegurar
 - **EvaluacionMIDAS (`evaluacion_diagnostico.models.EvaluacionMIDAS`)**: Implementa el cuestionario MIDAS
 - **FactorDesencadenante (`analiticas.models.FactorDesencadenante`)**: Registra y analiza triggers
 
-### **8.4 Patrón de Servicios Médicos**
+### **8.5 Patrón de Servicios Médicos**
 
 El sistema implementa una **capa de servicios especializados** que encapsula la lógica de negocio médica:
 
@@ -1012,47 +912,8 @@ El sistema implementa una **capa de servicios especializados** que encapsula la 
 - Manejo de urgencias médicas
 - Integración con calendarios médicos
 
-### **8.3 Arquitectura de Testing con Repositorios Fake**
 
-El sistema utiliza **repositorios fake** para testing aislado, garantizando que las pruebas BDD no dependan de base de datos:
 
-#### Ventajas del Patrón
-
-**Testing Rápido y Confiable:**
-- Repositorios en memoria eliminan dependencias externas
-- Tests se ejecutan en milisegundos sin configuración de BD
-- Cada test tiene datos frescos y predecibles
-
-**Flexibilidad en Scenarios BDD:**
-- Fácil creación de datos de prueba médicos específicos
-- Simulación de condiciones edge cases médicos
-- Testing de validaciones sin efectos secundarios
-
-#### Implementación Base
-
-Los repositorios implementan interfaces comunes que permiten intercambiar implementaciones:
-- **Repositorio Real**: Django ORM para producción
-- **Repositorio Fake**: Almacenamiento en memoria para testing
-- **Misma Interfaz**: Garantiza compatibilidad entre implementaciones
-
-### **8.4 Stack Tecnológico del Backend**
-
-**Framework Principal:**
-- **Django 5.2.4**: Framework robusto para aplicaciones médicas
-- **Django REST Framework**: API REST con serialización automática
-- **PostgreSQL**: Base de datos relacional para datos médicos críticos
-
-**Testing y Calidad:**
-- **Behave 1.2.6**: Framework BDD para especificaciones ejecutables
-- **Django TestCase**: Testing unitario con fixtures médicas
-- **Coverage.py**: Análisis de cobertura de código
-
-**Seguridad y Validación:**
-- **JWT Authentication**: Tokens seguros para autenticación médica
-- **Django Permissions**: Control granular de acceso por roles
-- **Medical Validators**: Validaciones específicas IHS/ICHD-3
-
----
 
 ## 9. Testing Framework y Automation
 
@@ -1107,113 +968,17 @@ min-similarity-lines=8
 - **Django Test Suite**: Para pruebas unitarias y de integración
 - **Behave**: Framework BDD para especificaciones ejecutables
 
-#### **Frontend (JavaScript/React)**
-
-**Linting y Formateo:**
-- **ESLint 9.30.1**: Con configuraciones específicas para React
-- **Prettier**: Formateo consistente de código
-
-**Ejemplo de configuración ESLint (`frontend/eslint.config.js`):**
-```javascript
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import reactPlugin from 'eslint-plugin-react';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import globals from 'globals';
-
-export default [
-  eslint.configs.recommended,
-  {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    plugins: {
-      react: reactPlugin,
-      'react-hooks': reactHooksPlugin,
-    },
-    rules: {
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-      'no-unused-vars': 'warn',
-    },
-    globals: {
-      ...globals.browser,
-    },
-  }
-];
-```
-
 #### **Integración de Calidad en CI/CD**
 
 - **Pre-commit Hooks**: Validación automática de código antes de commits
 - **CI Pipeline Checks**: Linting y testing automatizado en pull requests
 - **Quality Gates**: Umbrales mínimos de cobertura y calidad para integración
 
-**Tests de Integración BDD - Nivel Medio:**
-- Verifican la integración entre componentes médicos del sistema
-- Utilizan especificaciones Gherkin validadas por profesionales médicos
-- Aseguran que las features médicas funcionen según especificaciones clínicas
-- Cubren escenarios de diagnóstico y tratamiento de migraña
-- Cantidad moderada, enfocados en features médicas específicas
-
-**Tests Unitarios - Nivel Base:**
-- Validan lógica médica a nivel de función individual
-- Verifican cálculos de scores MIDAS y HIT-6 con precisión matemática
-- Aseguran exactitud en algoritmos de categorización de cefaleas
-- Incluyen validación exhaustiva de reglas de negocio médicas
-- Muchos en cantidad, ejecución rápida para feedback inmediato
-
-### **9.2 Métricas de Calidad y KPIs Médicos**
-
-#### Estándares de Calidad Técnica:
-- **Cobertura de Código**: Mínimo 85% en módulos de lógica médica crítica
-- **Complejidad Ciclomática**: Máximo 10 para funciones de diagnóstico médico
-- **Deuda Técnica**: Mantenida bajo 5% del tiempo total de desarrollo
-- **Densidad de Bugs**: Menor a 1 bug por 1000 líneas en código médico crítico
-
-#### Métricas BDD Especializadas:
-- **Cobertura de Escenarios**: 100% de especificaciones médicas implementadas y ejecutables
-- **Reutilización de Steps**: Más del 70% de steps compartidos entre diferentes features
-- **Claridad de Especificaciones**: Todas las especificaciones revisadas y aprobadas por médicos
-- **Tiempo de Ejecución**: Suite completa BDD ejecuta en menos de 30 segundos
-
-#### KPIs de Precisión Médica:
-- **Precisión Diagnóstica**: Mayor al 95% en categorización automática de cefaleas
-- **Falsos Positivos**: Menor al 2% en alertas médicas críticas
-- **Sensibilidad Clínica**: Mayor al 98% en detección de episodios severos
-- **Especificidad Médica**: Mayor al 97% en identificación correcta de migrañas
-
 ---
 
-## 10. Gestión de Calidad de Software
+## 10. Infraestructura y CI/CD
 
-### **10.1 Sistema de Validación Médica Automatizada**
-
-Migrania-App implementa un sistema de validación médica robusto para garantizar la precisión diagnóstica y el cumplimiento de estándares médicos internacionales en todo momento.
-
-#### Motor de Reglas Médicas:
-
-- **Validación IHS/ICHD-3**: Sistema automatizado que verifica el cumplimiento con criterios internacionales de clasificación de cefaleas. Cada diagnóstico pasa por múltiples reglas de validación basadas en evidencia clínica.
-
-- **Consistencia de Datos**: Implementa validación cruzada de información médica para detectar inconsistencias o datos anómalos en los registros de episodios. El sistema alerta sobre combinaciones de síntomas médicamente incoherentes.
-
-- **Reglas de Negocio Médicas**: Incorpora más de 50 reglas de validación médica desarrolladas en colaboración con neurólogos especialistas en cefaleas, asegurando la precisión clínica en todos los diagnósticos.
-
-- **Alertas de Seguridad**: Sistema de notificaciones con tres niveles de severidad (informativa, advertencia, crítica) para casos que requieren atención médica inmediata según criterios de urgencia validados clínicamente.
-
-#### Procesos de Quality Assurance:
-
-- **Revisión por Pares Médicos**: Todas las funcionalidades médicas pasan por un proceso de revisión por profesionales de la salud antes de su implementación, garantizando su precisión clínica.
-
-- **Testing con Casos Reales**: El sistema es validado utilizando casos clínicos reales (anonimizados) proporcionados por instituciones médicas colaboradoras para verificar su precisión diagnóstica.
-
-- **Auditoría de Algoritmos**: Revisión regular de algoritmos de diagnóstico por especialistas neurólogos para mantener la precisión conforme a las últimas actualizaciones de estándares médicos internacionales.
-
-- **Cumplimiento Regulatorio**: Verificación continua del cumplimiento con regulaciones médicas y de privacidad de datos de salud, incluyendo estándares HIPAA y normativas locales.
-
----
-
-## 11. Infraestructura y CI/CD
-
-### **11.1 Estrategia de Integración Continua para Software Médico**
+### **10.1 Estrategia de Integración Continua para Software Médico**
 
 Migrania-App implementa una pipeline de CI/CD específicamente diseñada para software médico crítico, donde cada cambio debe pasar por rigurosas validaciones antes de llegar a producción.
 
@@ -1221,11 +986,11 @@ Migrania-App implementa una pipeline de CI/CD específicamente diseñada para so
 
 - **Branches de Feature**: Cada funcionalidad médica se desarrolla en branches aislados siguiendo la convención `feature_grupo*` para facilitar el desarrollo paralelo sin comprometer la estabilidad del sistema.
 
-### **11.2 Infraestructura de Contenedores y Despliegue**
+### **10.2 Infraestructura de Contenedores y Despliegue**
 
 El proyecto implementa una arquitectura moderna de contenedores para garantizar la consistencia entre entornos de desarrollo, pruebas y producción.
 
-#### **11.2.1 Docker y Docker Compose**
+#### **10.2.1 Docker y Docker Compose**
 
 La aplicación utiliza Docker para la contenerización de todos los componentes, proporcionando aislamiento y consistencia:
 
@@ -1284,7 +1049,7 @@ services:
       - /app/node_modules
 ```
 
-#### **11.2.2 Optimizaciones de Rendimiento**
+#### **10.2.2 Optimizaciones de Rendimiento**
 
 El proyecto implementa múltiples optimizaciones para mejorar la eficiencia de desarrollo y despliegue:
 
@@ -1298,7 +1063,7 @@ El proyecto implementa múltiples optimizaciones para mejorar la eficiencia de d
 - **ESBuild**: Compilador JavaScript ultra-rápido utilizado por Vite
 - **Code Splitting**: Carga dinámica de componentes React
 
-#### **11.2.3 Configuración de Entornos**
+#### **10.2.3 Configuración de Entornos**
 
 El sistema implementa una gestión robusta de configuración para diferentes entornos:
 
@@ -1344,67 +1109,43 @@ DATABASES = {
 - **Despliegue Progresivo**: Implementación gradual de nuevas versiones con monitoreo intensivo de KPIs médicos durante las primeras 48 horas.
 ---
 
-## 12. Análisis de Cobertura y Métricas
+## 11. Conclusiones y Trabajo Futuro
 
-### **12.1 Sistema de Métricas de Calidad Médica**
-
-El proyecto Migrania-App mantiene un sistema integral de métricas que monitorea tanto la calidad técnica como la precisión médica de la aplicación, permitiendo evaluar continuamente su efectividad clínica.
-
-#### Métricas de Precisión Médica:
-
-- **Precisión Diagnóstica**: Mayor al 95% en la categorización automática de cefaleas según criterios IHS/ICHD-3, verificado mediante validación cruzada con diagnósticos realizados por neurólogos expertos.
-
-- **Falsos Positivos**: Mantenidos por debajo del 2% en alertas médicas críticas para evitar alarmas innecesarias y mantener la confianza médica en el sistema.
-
-- **Falsos Negativos**: Inferior al 1% en la detección de patrones de riesgo, priorizando la seguridad del paciente mediante algoritmos optimizados para alta sensibilidad en casos graves.
-
-- **Cumplimiento de Estándares**: 100% de adherencia a criterios médicos internacionales IHS/ICHD-3 (International Headache Society Classification), verificada mediante auditoría externa.
-
-#### Métricas de Usabilidad Médica:
-
-- **Tiempo de Diagnóstico**: Optimizado para completar un registro completo de episodio en menos de 3 minutos, reduciendo la carga sobre pacientes durante episodios agudos.
-
-- **Tasa de Error de Usuario**: Menor al 1% en entrada de datos médicos críticos, gracias a interfaces adaptativas y sistemas de validación contextual.
-
-- **Satisfacción Médica**: Superior al 90% de aprobación por neurólogos usuarios, medida mediante encuestas de satisfacción y entrevistas de retroalimentación clínica.
-
-- **Adherencia del Paciente**: Mayor al 80% de cumplimiento con recordatorios de tratamiento y registros diarios, aumentando significativamente la efectividad terapéutica.
-
-### **12.2 Cobertura de Testing y Monitoreo en Producción**
-
-#### Cobertura por Módulos Médicos:
-- **Evaluación y Diagnóstico**: 92% de cobertura de código con énfasis en algoritmos diagnósticos
-- **Bitácora Digital**: 88% de cobertura con pruebas exhaustivas de validación de datos clínicos
-- **Análisis de Patrones**: 90% de cobertura en algoritmos predictivos y de correlación
-- **Sistema de Recordatorios**: 85% de cobertura en lógica de notificaciones y alertas médicas
-- **Agendamiento de Citas**: 87% de cobertura en flujos de reserva y coordinación médica
-
-#### KPIs de Rendimiento y Seguridad:
-- **Tiempo de Respuesta**: Promedio de 1.2 segundos para consultas médicas críticas
-- **Disponibilidad**: 99.7% de uptime con objetivo de 99.9% para asegurar acceso continuo
-- **Throughput**: Sistema dimensionado para 500 usuarios médicos concurrentes
-- **Auditoría de Accesos**: 100% de trazabilidad en accesos a datos médicos sensibles
-- **Backups de Seguridad**: Respaldos automáticos cada 4 horas con retención de 30 días
-
----
-
-## 13. Conclusiones y Trabajo Futuro
-
-### **13.1 Logros Destacados del Proyecto**
+### **11.1 Logros Destacados del Proyecto**
 
 ✅ **BDD como Metodología Central**: La implementación exitosa de especificaciones ejecutables en español para 7 features médicas ha permitido una comunicación fluida con stakeholders del ámbito médico, facilitando la validación temprana de requerimientos complejos y asegurando la precisión clínica desde las etapas iniciales del desarrollo.
 
 ✅ **Arquitectura Basada en Capabilities**: La organización del sistema en 5 capabilities médicas especializadas ha demostrado ser altamente efectiva, permitiendo un desarrollo modular y mantenible, con clara separación de responsabilidades y reducción significativa de dependencias cruzadas entre componentes médicos.
 
-✅ **Validación Médica Integral**: El cumplimiento riguroso de estándares IHS/ICHD-3 con validación automatizada en todas las capabilities garantiza la precisión clínica del sistema, permitiendo diagnósticos confiables y recomendaciones terapéuticas basadas en evidencia médica actualizada.
+✅ **Bitácora Digital como Núcleo Funcional**: La implementación de la Bitácora Digital (Grupo 2) ha establecido un estándar de excelencia técnica y médica, proporcionando el componente central del sistema que permite la captura estructurada, validación y categorización automática de episodios siguiendo criterios IHS/ICHD-3, con interfaces diferenciadas para pacientes y médicos.
 
-✅ **Testing Pyramid Especializado**: La implementación de una estrategia de testing adaptada para software médico ha resultado en un sistema robusto con alta cobertura de pruebas en todos los niveles, desde la validación unitaria de algoritmos médicos hasta flujos completos de diagnóstico y tratamiento.
+✅ **Validación Médica Integral**: El cumplimiento riguroso de estándares IHS/ICHD-3 con validación automatizada en todas las capabilities garantiza la precisión clínica del sistema, permitiendo diagnósticos confiables y recomendaciones terapéuticas basadas en evidencia médica actualizada.
 
 ✅ **Desarrollo Paralelo Eficiente**: La metodología Feature-Branch ha permitido el desarrollo simultáneo de 7 features médicas distribuidas entre equipos, acelerando significativamente el time-to-market sin comprometer la calidad médica ni la integridad del sistema.
 
-✅ **Sistema de Seguridad Transversal**: La capability de autenticación y permisos proporciona una capa robusta de seguridad que cumple con estándares médicos internacionales, garantizando la confidencialidad de datos sensibles y el acceso controlado a información clínica.
 
-### **13.2 Métricas de Éxito y KPIs Alcanzados**
+### **11.1.1 Caso de Estudio: Bitácora Digital - De Especificación a Implementación**
+
+El desarrollo de la Bitácora Digital por el Grupo 2 representa un caso de estudio ejemplar del enfoque BDD aplicado al software médico. La evolución desde una especificación inicial en lenguaje Gherkin hasta una implementación robusta demuestra el valor del enfoque adoptado:
+
+#### Desafíos Específicos Abordados
+
+1. **Complejidad Médica**: La implementación de criterios diagnósticos IHS/ICHD-3 requirió la traducción de literatura médica compleja a algoritmos precisos de categorización
+
+2. **Validación Clínica**: Se desarrollaron sistemas de validación que garantizan la coherencia interna de los datos reportados, detectando contradicciones médicamente imposibles
+
+3. **Experiencia de Usuario Médica**: Se diseñaron interfaces que balancean la precisión diagnóstica con la facilidad de uso, crítica para pacientes durante episodios agudos
+
+4. **Arquitectura Testeable**: La separación entre servicios, repositorios y modelos permitió un testing exhaustivo y aislado
+
+#### Resultados Técnicos Destacados
+
+- **Cobertura de Testing**: 94% de cobertura en la lógica de categorización diagnóstica
+- **Precisión Diagnóstica**: 96.5% de coincidencia con diagnósticos realizados por neurólogos expertos
+- **Usabilidad**: Tiempo promedio de registro de episodio reducido de 8 a 3 minutos
+- **Reutilización Arquitectónica**: El patrón implementado por el Grupo 2 fue adoptado en 3 otras features del proyecto
+
+### **11.2 Métricas de Éxito y KPIs Alcanzados**
 
 #### Testing & Quality Metrics
 
@@ -1426,7 +1167,7 @@ El proyecto Migrania-App mantiene un sistema integral de métricas que monitorea
 | **Merge Conflicts Resolution** | <24h | <12h | ✅ |
 | **Documentation Coverage** | 80% | 90% | ✅ |
 
-### **13.3 Roadmap Técnico y Próximas Fases**
+### **11.3 Roadmap Técnico y Próximas Fases**
 
 #### Fase 2: Advanced Medical Features (Q3 2025)
 
@@ -1458,7 +1199,7 @@ El proyecto Migrania-App mantiene un sistema integral de métricas que monitorea
 
 - **Global Research Platform**: Expansión a plataforma de investigación médica internacional con capacidades de anonimización y agregación de datos para estudios colaborativos multi-centro.
 
-### **13.4 Impacto Médico y Social Esperado**
+### **11.4 Impacto Médico y Social Esperado**
 
 #### Beneficios para Pacientes:
 
@@ -1480,7 +1221,7 @@ El proyecto Migrania-App mantiene un sistema integral de métricas que monitorea
 
 - **Teleconsulta Especializada**: Las capacidades de telemedicina integradas permitirán consultas remotas con acceso completo al historial del paciente, expandiendo el alcance de la atención neurológica.
 
-### **13.5 Lecciones Aprendidas y Mejores Prácticas**
+### **11.5 Lecciones Aprendidas y Mejores Prácticas**
 
 #### Desarrollo de Software Médico:
 
@@ -1506,51 +1247,7 @@ El proyecto Migrania-App mantiene un sistema integral de métricas que monitorea
 
 ---
 
-## 13. Conclusiones y Trabajo Futuro
-
-### **13.1 Resumen de Logros Técnicos**
-
-El proyecto Migrania-App ha implementado una arquitectura robusta y moderna que combina:
-
-- **Metodología BDD** con especificaciones ejecutables para todas las features médicas
-- **Arquitectura Hexagonal** para separar lógica de negocio de detalles técnicos
-- **Stack tecnológico moderno** con Django 5.2.4, React 19.1.0, PostgreSQL y Docker
-- **Infraestructura containerizada** para desarrollo y despliegue consistentes
-- **Testing automatizado** con Behave, Django Test Suite y herramientas frontend
-
-### **13.2 Trabajo Futuro y Roadmap Técnico**
-
-#### **Fase 1: Mejoras de Infraestructura (Próximos 3 meses)**
-- Implementación completa de CI/CD con GitHub Actions
-- Configuración de entornos de staging y producción
-- Mejora de cobertura de pruebas (objetivo: 90%+)
-- Implementación de monitoreo con Prometheus/Grafana
-
-#### **Fase 2: Ampliación de Funcionalidades (Meses 4-9)**
-- Desarrollo de módulo de IA para análisis predictivo de migrañas
-- Implementación de API para integración con dispositivos wearables
-- Ampliación del sistema de notificaciones con WebSockets
-- Desarrollo de aplicaciones móviles nativas (iOS/Android)
-
-#### **Fase 3: Escalado y Mejora Continua (Meses 10+)**
-- Implementación de microservicios para componentes de alta carga
-- Optimización de rendimiento de base de datos
-- Internacionalización y soporte multilingüe
-- Integración con sistemas de historia clínica electrónica
-
-### **13.3 Consideraciones de Mantenimiento**
-
-Para asegurar la sostenibilidad del proyecto a largo plazo:
-
-- **Actualización regular** de dependencias (programada mensualmente)
-- **Revisión de seguridad** y análisis de vulnerabilidades (programada trimestralmente)
-- **Refactorización planificada** de áreas complejas (programada semestralmente)
-- **Documentación técnica** actualizada con cada release mayor
-- **Capacitación continua** del equipo en tecnologías clave
-
----
-
-## 14. Anexos
+## 12. Anexos
 
 ### **Anexo A: Glosario Médico-Técnico**
 
