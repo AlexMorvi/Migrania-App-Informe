@@ -828,7 +828,152 @@ El backend implementa **Arquitectura Hexagonal (Ports & Adapters)** para garanti
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### **8.2 Patrón de Servicios Médicos**
+### **8.2 Stack Tecnológico Detallado**
+
+El proyecto implementa un stack moderno y robusto con las siguientes tecnologías específicas:
+
+#### **Backend**
+
+**Framework y Core:**
+- **Django 5.2.4**: Framework web de alto nivel para desarrollo rápido pero robusto
+- **Python 3.13**: Versión más reciente con mejoras significativas de rendimiento
+- **Django REST Framework 3.16.0**: Framework para APIs RESTful
+- **PostgreSQL 16**: Sistema de base de datos relacional avanzado
+
+**Autenticación y Seguridad:**
+- **Django REST Framework Simple JWT 5.5.1**: Implementación JWT para autenticación segura
+- **Djoser 2.3.3**: Endpoints REST para gestión de usuarios
+- **Social Auth**: Integración con autenticación de terceros
+
+**Documentación API:**
+- **DRF Spectacular 0.28.0**: Generación automática de documentación OpenAPI 3.0
+
+**Testing y Calidad:**
+- **Behave 1.2.6**: Framework BDD para Python
+- **Pylint**: Analizador estático de código con reglas personalizadas para el proyecto
+- **Coverage**: Medición de cobertura de pruebas
+
+**Infraestructura:**
+- **Docker/Docker Compose**: Contenedores para desarrollo y despliegue consistentes
+- **uv**: Instalador de paquetes Python ultrarrápido
+- **Python-dotenv 1.1.1**: Carga de variables de entorno desde archivos .env
+
+#### **Frontend**
+
+**Framework y Core:**
+- **React 19.1.0**: Biblioteca JavaScript para interfaces de usuario
+- **Vite 7.0.3**: Herramienta de construcción frontend ultrarrápida
+- **React Router DOM 7.6.3**: Enrutamiento declarativo para React
+- **React Icons 5.5.0**: Biblioteca de iconos para React
+
+**Desarrollo y Calidad:**
+- **ESLint 9.30.1**: Linting de JavaScript/TypeScript
+- **Eslint-plugin-react-hooks 5.2.0**: Reglas específicas para hooks de React
+- **TypeScript**: Soporte para tipado estático en el frontend
+
+#### **DevOps y CI/CD**
+
+**Contenedores:**
+- **Docker multi-stage builds**: Optimización de imágenes Docker
+- **Docker Compose**: Orquestación local de servicios
+
+**Optimización de Rendimiento:**
+- **uv**: Instalación ultrarrápida de dependencias Python
+- **Vite**: Servidor de desarrollo con HMR (Hot Module Replacement)
+- **Conexión PostgreSQL optimizada**: Configuración de timeouts y SSL
+
+### **8.3 Modelos de Datos y Estructura del Dominio**
+
+El sistema implementa un modelo de dominio rico que refleja las entidades médicas del sistema de manejo de migrañas. A continuación se describen los modelos principales:
+
+#### **8.3.1 Modelo de Usuarios (`usuarios.models.Usuario`)**
+
+Este modelo extiende AbstractUser de Django para implementar un sistema flexible de tipos de usuarios médicos:
+
+```python
+class Usuario(AbstractUser):
+    class TipoUsuario(models.TextChoices):
+        MEDICO = 'medico', 'Médico'
+        PACIENTE = 'paciente', 'Paciente'
+        ENFERMERA = 'enfermera', 'Enfermera'
+    
+    class Genero(models.TextChoices):
+        MASCULINO = 'M', 'Masculino'
+        FEMENINO = 'F', 'Femenino'
+        OTRO = 'O', 'Otro'
+        PREFIERO_NO_DECIR = 'N', 'Prefiero no decir'
+    
+    # Campos específicos
+    email = models.EmailField(unique=True, verbose_name='Email')
+    cedula = models.CharField(max_length=10, unique=True)
+    tipo_usuario = models.CharField(max_length=10, choices=TipoUsuario.choices)
+    telefono = models.CharField(max_length=10)
+    fecha_nacimiento = models.DateField()
+    direccion = models.TextField()
+    genero = models.CharField(max_length=1, choices=Genero.choices)
+    
+    # Configuración del modelo
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'cedula', 'first_name', 'last_name']
+```
+
+El modelo incluye propiedades calculadas como `es_medico`, `es_paciente`, `edad` y usa relaciones polimórficas para gestionar perfiles médicos especializados.
+
+#### **8.3.2 Modelo de Episodios de Cefalea (`evaluacion_diagnostico.models.EpisodioCefalea`)**
+
+Este modelo implementa una representación detallada de los episodios de cefalea, siguiendo estándares médicos internacionales:
+
+```python
+class EpisodioCefalea(models.Model):
+    # Constantes para choices
+    SEVERIDAD_CHOICES = [('Leve', 'Leve'), ('Moderada', 'Moderada'), ('Severa', 'Severa')]
+    LOCALIZACION_CHOICES = [('Unilateral', 'Unilateral'), ('Bilateral', 'Bilateral')]
+    CARACTER_DOLOR_CHOICES = [('Pulsátil', 'Pulsátil'), ('Opresivo', 'Opresivo'), ('Punzante', 'Punzante')]
+    CATEGORIA_CEFALEA_CHOICES = [
+        ('Migraña sin aura', 'Migraña sin aura'),
+        ('Migraña con aura', 'Migraña con aura'),
+        ('Cefalea de tipo tensional', 'Cefalea de tipo tensional')
+    ]
+    
+    # Relaciones
+    paciente = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='episodios_cefalea')
+    
+    # Características principales
+    duracion_cefalea_horas = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(72)])
+    severidad = models.CharField(max_length=20, choices=SEVERIDAD_CHOICES)
+    localizacion = models.CharField(max_length=20, choices=LOCALIZACION_CHOICES)
+    caracter_dolor = models.CharField(max_length=20, choices=CARACTER_DOLOR_CHOICES)
+    
+    # Síntomas asociados
+    empeora_actividad = models.BooleanField()
+    nauseas_vomitos = models.BooleanField()
+    fotofobia = models.BooleanField()
+    fonofobia = models.BooleanField()
+    
+    # Datos del aura
+    presencia_aura = models.BooleanField()
+    sintomas_aura = models.CharField(max_length=200, blank=True)
+    duracion_aura_minutos = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(120)])
+    
+    # Datos específicos para mujeres
+    en_menstruacion = models.BooleanField()
+    anticonceptivos = models.BooleanField()
+    
+    # Categorización diagnóstica
+    categoria_diagnostica = models.CharField(max_length=50, choices=CATEGORIA_CEFALEA_CHOICES, blank=True)
+```
+
+El modelo implementa validaciones avanzadas a través de `clean()` para asegurar coherencia médica en los datos registrados.
+
+#### **8.3.3 Otros Modelos Relevantes**
+
+- **Tratamiento (`tratamiento.models.Tratamiento`)**: Gestiona planes terapéuticos completos
+- **Recordatorio (`tratamiento.models.Recordatorio`)**: Gestiona recordatorios de medicación
+- **CitaMedica (`agendamiento_citas.models.CitaMedica`)**: Coordina citas con especialistas
+- **EvaluacionMIDAS (`evaluacion_diagnostico.models.EvaluacionMIDAS`)**: Implementa el cuestionario MIDAS
+- **FactorDesencadenante (`analiticas.models.FactorDesencadenante`)**: Registra y analiza triggers
+
+### **8.4 Patrón de Servicios Médicos**
 
 El sistema implementa una **capa de servicios especializados** que encapsula la lógica de negocio médica:
 
@@ -924,6 +1069,84 @@ La aplicación Migrania-App implementa una estrategia de testing basada en la pi
 - Incluyen validación de cumplimiento con estándares médicos IHS/ICHD-3
 - Pocos en cantidad pero críticos médicamente
 
+### **9.1.1 Herramientas de Calidad y Linting**
+
+El proyecto implementa un conjunto completo de herramientas para asegurar la calidad del código:
+
+#### **Backend (Python/Django)**
+
+**Linting y Análisis Estático:**
+- **Pylint**: Configurado con reglas específicas para el proyecto médico
+  - Configuración personalizada para validar nombres de variables médicas
+  - Reglas estrictas para documentación de funciones críticas
+  - Análisis de complejidad para funciones de diagnóstico
+
+**Ejemplo de configuración Pylint (`backend/.pylintrc`):**
+```ini
+[MASTER]
+ignore=CVS,migrations,tests
+init-hook='import sys; sys.path.append(".")'
+
+[MESSAGES CONTROL]
+disable=C0111,R0903,C0103
+
+[FORMAT]
+max-line-length=100
+
+[DESIGN]
+max-args=6
+max-attributes=12
+min-public-methods=1
+
+[SIMILARITIES]
+min-similarity-lines=8
+```
+
+**Testing y Cobertura:**
+- **Coverage**: Configurado para generar reportes HTML y XML
+- **Django Test Suite**: Para pruebas unitarias y de integración
+- **Behave**: Framework BDD para especificaciones ejecutables
+
+#### **Frontend (JavaScript/React)**
+
+**Linting y Formateo:**
+- **ESLint 9.30.1**: Con configuraciones específicas para React
+- **Prettier**: Formateo consistente de código
+
+**Ejemplo de configuración ESLint (`frontend/eslint.config.js`):**
+```javascript
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import globals from 'globals';
+
+export default [
+  eslint.configs.recommended,
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      'no-unused-vars': 'warn',
+    },
+    globals: {
+      ...globals.browser,
+    },
+  }
+];
+```
+
+#### **Integración de Calidad en CI/CD**
+
+- **Pre-commit Hooks**: Validación automática de código antes de commits
+- **CI Pipeline Checks**: Linting y testing automatizado en pull requests
+- **Quality Gates**: Umbrales mínimos de cobertura y calidad para integración
+
 **Tests de Integración BDD - Nivel Medio:**
 - Verifican la integración entre componentes médicos del sistema
 - Utilizan especificaciones Gherkin validadas por profesionales médicos
@@ -997,6 +1220,112 @@ Migrania-App implementa una pipeline de CI/CD específicamente diseñada para so
 #### Pipeline de Desarrollo:
 
 - **Branches de Feature**: Cada funcionalidad médica se desarrolla en branches aislados siguiendo la convención `feature_grupo*` para facilitar el desarrollo paralelo sin comprometer la estabilidad del sistema.
+
+### **11.2 Infraestructura de Contenedores y Despliegue**
+
+El proyecto implementa una arquitectura moderna de contenedores para garantizar la consistencia entre entornos de desarrollo, pruebas y producción.
+
+#### **11.2.1 Docker y Docker Compose**
+
+La aplicación utiliza Docker para la contenerización de todos los componentes, proporcionando aislamiento y consistencia:
+
+**Estructura de Dockerfile Principal:**
+```dockerfile
+FROM python:3.13-slim-bookworm  
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y curl
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+COPY backend/requirements.txt .
+RUN uv pip install -r requirements.txt --system
+
+COPY backend/ .
+
+EXPOSE 8000
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+```
+
+**Orquestación con Docker Compose:**
+```yaml
+services: 
+  backend:
+    build: .
+    container_name: django_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+  
+  # Servicios adicionales planificados
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+```
+
+#### **11.2.2 Optimizaciones de Rendimiento**
+
+El proyecto implementa múltiples optimizaciones para mejorar la eficiencia de desarrollo y despliegue:
+
+**Backend:**
+- **uv**: Instalador de paquetes Python ultrarrápido que reemplaza pip
+- **Conexiones de base de datos optimizadas**: Pool de conexiones configurado
+- **Compresión HTTP**: Habilitada para reducir el tráfico de red
+
+**Frontend:**
+- **Vite**: Servidor de desarrollo con HMR (Hot Module Replacement)
+- **ESBuild**: Compilador JavaScript ultra-rápido utilizado por Vite
+- **Code Splitting**: Carga dinámica de componentes React
+
+#### **11.2.3 Configuración de Entornos**
+
+El sistema implementa una gestión robusta de configuración para diferentes entornos:
+
+**Variables de Entorno:**
+- Configuración segura con archivos .env y python-dotenv
+- Separación clara entre configuraciones de desarrollo, pruebas y producción
+- Gestión de secretos para credenciales de base de datos, claves JWT, etc.
+
+**Ejemplo de Configuración en Django:**
+```python
+# migraine_app/settings.py
+load_dotenv()
+
+SECRET_KEY = os.getenv('SECRET_KEY', 'default-insecure-key-for-dev')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'postgres'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+    }
+}
+```
 
 - **Testing Automatizado**: El sistema ejecuta automáticamente la suite completa de tests BDD y unitarios con cada commit, verificando que los cambios cumplan con criterios médicos y técnicos.
 
@@ -1177,6 +1506,50 @@ El proyecto Migrania-App mantiene un sistema integral de métricas que monitorea
 
 ---
 
+## 13. Conclusiones y Trabajo Futuro
+
+### **13.1 Resumen de Logros Técnicos**
+
+El proyecto Migrania-App ha implementado una arquitectura robusta y moderna que combina:
+
+- **Metodología BDD** con especificaciones ejecutables para todas las features médicas
+- **Arquitectura Hexagonal** para separar lógica de negocio de detalles técnicos
+- **Stack tecnológico moderno** con Django 5.2.4, React 19.1.0, PostgreSQL y Docker
+- **Infraestructura containerizada** para desarrollo y despliegue consistentes
+- **Testing automatizado** con Behave, Django Test Suite y herramientas frontend
+
+### **13.2 Trabajo Futuro y Roadmap Técnico**
+
+#### **Fase 1: Mejoras de Infraestructura (Próximos 3 meses)**
+- Implementación completa de CI/CD con GitHub Actions
+- Configuración de entornos de staging y producción
+- Mejora de cobertura de pruebas (objetivo: 90%+)
+- Implementación de monitoreo con Prometheus/Grafana
+
+#### **Fase 2: Ampliación de Funcionalidades (Meses 4-9)**
+- Desarrollo de módulo de IA para análisis predictivo de migrañas
+- Implementación de API para integración con dispositivos wearables
+- Ampliación del sistema de notificaciones con WebSockets
+- Desarrollo de aplicaciones móviles nativas (iOS/Android)
+
+#### **Fase 3: Escalado y Mejora Continua (Meses 10+)**
+- Implementación de microservicios para componentes de alta carga
+- Optimización de rendimiento de base de datos
+- Internacionalización y soporte multilingüe
+- Integración con sistemas de historia clínica electrónica
+
+### **13.3 Consideraciones de Mantenimiento**
+
+Para asegurar la sostenibilidad del proyecto a largo plazo:
+
+- **Actualización regular** de dependencias (programada mensualmente)
+- **Revisión de seguridad** y análisis de vulnerabilidades (programada trimestralmente)
+- **Refactorización planificada** de áreas complejas (programada semestralmente)
+- **Documentación técnica** actualizada con cada release mayor
+- **Capacitación continua** del equipo en tecnologías clave
+
+---
+
 ## 14. Anexos
 
 ### **Anexo A: Glosario Médico-Técnico**
@@ -1231,3 +1604,6 @@ El proyecto Migrania-App mantiene un sistema integral de métricas que monitorea
 | **Code Review Medical Approval** | 90% | 95% | ✅ |
 ---
 
+**© 2025 V-V-Team-2025A - Migrania App**  
+*Documentación Técnica Completa - Versión 1.0*  
+*Proyecto de Software Médico con Metodología BDD*
